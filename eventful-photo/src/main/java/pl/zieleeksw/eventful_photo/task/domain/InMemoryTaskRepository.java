@@ -26,4 +26,11 @@ class InMemoryTaskRepository implements TaskRepository {
     public Optional<Task> findById(UUID id) {
         return Optional.ofNullable(database.get(id));
     }
+
+    @Override
+    public long countByStatus(Status status) {
+        return database.values().stream()
+                .filter(task -> task.getStatus() == status)
+                .count();
+    }
 }

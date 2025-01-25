@@ -11,4 +11,7 @@ interface TaskRepository extends Repository<Task, UUID> {
     Task save(Task task);
 
     Optional<Task> findById(UUID id);
+
+    long countByStatus(Status status);
+
 }

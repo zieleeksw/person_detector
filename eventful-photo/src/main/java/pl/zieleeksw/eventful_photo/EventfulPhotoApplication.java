@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EventfulPhotoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EventfulPhotoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EventfulPhotoApplication.class, args);
+    }
 }
