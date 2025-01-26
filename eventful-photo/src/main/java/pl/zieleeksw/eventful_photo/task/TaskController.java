@@ -25,39 +25,51 @@ class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CreatedTaskDto saveTaskFromFile(@RequestParam("file") MultipartFile file) {
+    CreatedTaskDto saveTaskFromFile(
+            @RequestParam("file") MultipartFile file
+    ) {
         return taskFacade.save(file);
     }
 
     @PostMapping("/url")
     @ResponseStatus(HttpStatus.CREATED)
-    CreatedTaskDto saveTaskFromUrl(@RequestParam("url") String url) {
+    CreatedTaskDto saveTaskFromUrl(
+            @RequestParam("url") String url
+    ) {
         return taskFacade.save(url);
     }
 
     @GetMapping
-    Set<TaskDto> getTasks() {
+    Set<TaskDto> getTasks(
+    ) {
         return taskFacade.findAll();
     }
 
     @GetMapping("/{id}")
-    TaskDto getTaskById(@PathVariable UUID id) {
+    TaskDto getTaskById(
+            @PathVariable UUID id
+    ) {
         return taskFacade.findById(id);
     }
 
     @PutMapping("/{id}/status")
-    void updateTaskStatus(@PathVariable UUID id, @RequestBody StatusDto statusDto) {
+    void updateTaskStatus(
+            @PathVariable UUID id, @RequestBody StatusDto statusDto
+    ) {
         taskFacade.updateStatus(id, statusDto);
     }
 
     @PutMapping("/{id}/status/detected-persons")
-    void updateTaskStatusAndDetectedPersons(@PathVariable UUID id,
-                                            @RequestBody TaskStatusDetectedPersonsDto dto) {
+    void updateTaskStatusAndDetectedPersons(
+            @PathVariable UUID id,
+            @RequestBody TaskStatusDetectedPersonsDto dto
+    ) {
         taskFacade.updateStatusAndDetectedPersons(id, dto);
     }
 
     @GetMapping("/count")
-    Map<StatusDto, Long> getTaskCountByStatus() {
+    Map<StatusDto, Long> getTaskCountByStatus(
+    ) {
         return taskFacade.getTaskCountByStatus();
     }
 }
