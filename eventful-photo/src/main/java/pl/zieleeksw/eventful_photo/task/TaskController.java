@@ -10,6 +10,7 @@ import pl.zieleeksw.eventful_photo.task.dto.TaskDto;
 import pl.zieleeksw.eventful_photo.task.dto.TaskStatusDetectedPersonsDto;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -18,40 +19,45 @@ class TaskController {
 
     private final TaskFacade taskFacade;
 
-    public TaskController(TaskFacade taskFacade) {
+    TaskController(TaskFacade taskFacade) {
         this.taskFacade = taskFacade;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedTaskDto saveTaskFromFile(@RequestParam("file") MultipartFile file) {
+    CreatedTaskDto saveTaskFromFile(@RequestParam("file") MultipartFile file) {
         return taskFacade.save(file);
     }
 
     @PostMapping("/url")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedTaskDto saveTaskFromUrl(@RequestParam("url") String url) {
+    CreatedTaskDto saveTaskFromUrl(@RequestParam("url") String url) {
         return taskFacade.save(url);
     }
 
+    @GetMapping
+    Set<TaskDto> getTasks() {
+        return taskFacade.findAll();
+    }
+
     @GetMapping("/{id}")
-    public TaskDto getTaskById(@PathVariable UUID id) {
+    TaskDto getTaskById(@PathVariable UUID id) {
         return taskFacade.findById(id);
     }
 
     @PutMapping("/{id}/status")
-    public void updateTaskStatus(@PathVariable UUID id, @RequestBody StatusDto statusDto) {
+    void updateTaskStatus(@PathVariable UUID id, @RequestBody StatusDto statusDto) {
         taskFacade.updateStatus(id, statusDto);
     }
 
     @PutMapping("/{id}/status/detected-persons")
-    public void updateTaskStatusAndDetectedPersons(@PathVariable UUID id,
-                                                   @RequestBody TaskStatusDetectedPersonsDto dto) {
+    void updateTaskStatusAndDetectedPersons(@PathVariable UUID id,
+                                            @RequestBody TaskStatusDetectedPersonsDto dto) {
         taskFacade.updateStatusAndDetectedPersons(id, dto);
     }
 
     @GetMapping("/count")
-    public Map<StatusDto, Long> getTaskCountByStatus() {
+    Map<StatusDto, Long> getTaskCountByStatus() {
         return taskFacade.getTaskCountByStatus();
     }
 }

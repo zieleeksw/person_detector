@@ -7,6 +7,7 @@ import pl.zieleeksw.eventful_photo.task.dto.*;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,6 +104,21 @@ class TaskFacadeTest {
         assertEquals((String.format("Task with id %s not found", nonExistentId)), exception.getMessage());
     }
 
+    @Test
+    void shouldFindAllTasksAndReturnTaskDto() {
+        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", "image-data".getBytes());
+        CreatedTaskDto created1 = facade.save(file);
+        CreatedTaskDto created2 = facade.save(file);
+
+        Set<TaskDto> all = facade.findAll();
+
+        assertNotNull(all);
+        assertEquals(2, all.size());
+        assertTrue(all.stream().anyMatch(task -> task.id().equals(created1.id())));
+        assertTrue(all.stream().anyMatch(task -> task.id().equals(created2.id())));
+        assertTrue(all.stream().allMatch(task -> task.status().equals(StatusDto.PENDING)));
+        assertTrue(all.stream().allMatch(task -> task.detectedPersons().equals(0)));
+    }
 
     @Test
     void shouldReturnTaskCountByStatus() {

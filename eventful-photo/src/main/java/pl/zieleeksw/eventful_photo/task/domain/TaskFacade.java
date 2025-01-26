@@ -6,6 +6,7 @@ import pl.zieleeksw.eventful_photo.task.dto.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,12 @@ public class TaskFacade {
         } catch (IOException e) {
             throw new TaskException(e.getMessage());
         }
+    }
+
+    public Set<TaskDto> findAll() {
+        return repository.findAll().stream()
+                .map(Task::dto)
+                .collect(Collectors.toSet());
     }
 
     public TaskDto findById(UUID id) {

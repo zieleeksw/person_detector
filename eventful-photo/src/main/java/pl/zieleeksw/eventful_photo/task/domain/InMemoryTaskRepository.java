@@ -1,9 +1,6 @@
 package pl.zieleeksw.eventful_photo.task.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 class InMemoryTaskRepository implements TaskRepository {
 
@@ -32,5 +29,10 @@ class InMemoryTaskRepository implements TaskRepository {
         return database.values().stream()
                 .filter(task -> task.getStatus() == status)
                 .count();
+    }
+
+    @Override
+    public Set<Task> findAll() {
+        return new HashSet<>(database.values());
     }
 }
