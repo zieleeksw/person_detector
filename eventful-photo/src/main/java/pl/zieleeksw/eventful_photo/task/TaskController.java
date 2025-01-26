@@ -52,11 +52,17 @@ class TaskController {
         return taskFacade.findById(id);
     }
 
+    @GetMapping("/count")
+    Map<StatusDto, Long> getTaskCountByStatus(
+    ) {
+        return taskFacade.getTaskCountByStatus();
+    }
+
     @PutMapping("/{id}/status")
     void updateTaskStatus(
-            @PathVariable UUID id, @RequestBody StatusDto statusDto
+            @PathVariable UUID id, @RequestBody String status
     ) {
-        taskFacade.updateStatus(id, statusDto);
+        taskFacade.updateStatus(id, StatusDto.valueOf(status));
     }
 
     @PutMapping("/{id}/status/detected-persons")
@@ -65,11 +71,5 @@ class TaskController {
             @RequestBody TaskStatusDetectedPersonsDto dto
     ) {
         taskFacade.updateStatusAndDetectedPersons(id, dto);
-    }
-
-    @GetMapping("/count")
-    Map<StatusDto, Long> getTaskCountByStatus(
-    ) {
-        return taskFacade.getTaskCountByStatus();
     }
 }
