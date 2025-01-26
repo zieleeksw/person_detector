@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>pl.zieleeksw</groupId>
 	<artifactId>photo-analysis</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>latest</version>
 	<name>photo-analysis</name>
 	<description>Spring app - project to analyzing the number of people in the photos</description>
 	<url/>
