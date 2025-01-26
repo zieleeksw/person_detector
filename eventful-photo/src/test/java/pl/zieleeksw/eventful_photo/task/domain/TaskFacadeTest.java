@@ -1,32 +1,43 @@
 package pl.zieleeksw.eventful_photo.task.domain;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import pl.zieleeksw.eventful_photo.task.dto.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 class TaskFacadeTest {
 
-    private final TaskFacade facade = new TaskConfiguration().taskFacade();
+    private final RabbitTemplate rabbitTemplate = mock(RabbitTemplate.class);
+    private final HttpImageClient httpImageClient = mock(HttpImageClient.class);
+    private TaskFacade facade = new TaskConfiguration().taskFacade(httpImageClient, rabbitTemplate);
 
     @Test
     void shouldSaveTaskFromMultiPartFile() {
         byte[] imageBytes = "image-data".getBytes();
         MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-
         CreatedTaskDto result = facade.save(file);
 
         assertNotNull(result);
         assertNotNull(result.id());
 
         TaskDto savedTask = facade.findById(result.id());
+
         assertNotNull(savedTask);
         assertEquals(Status.PENDING, Status.valueOf(savedTask.status().toString()));
         assertEquals(0, savedTask.detectedPersons());
+        verify(rabbitTemplate).convertAndSend(
+                eq("taskExchange"),
+                eq("taskRoutingKey"),
+                eq(result.id().toString())
+        );
     }
 
     @Test
@@ -35,6 +46,32 @@ class TaskFacadeTest {
 
         TaskException exception = assertThrows(TaskException.class, () -> facade.save(file));
         assertEquals("File is empty", exception.getMessage());
+    }
+
+    @Test
+    void shouldSaveTaskFromUrlAndSendMessage() throws IOException {
+        String validUrl = "http://valid-url.com/image.jpg";
+        byte[] imageBytes = "image-data".getBytes();
+
+        HttpImageClient imageClient = mock(HttpImageClient.class);
+        when(imageClient.download(validUrl)).thenReturn(imageBytes);
+
+        facade = new TaskFacade(new InMemoryTaskRepository(), imageClient, new TaskProducer(rabbitTemplate));
+        CreatedTaskDto result = facade.save(validUrl);
+
+        assertNotNull(result);
+        assertNotNull(result.id());
+
+        TaskDto savedTask = facade.findById(result.id());
+
+        assertNotNull(savedTask);
+        assertEquals(Status.PENDING, Status.valueOf(savedTask.status().toString()));
+        assertEquals(0, savedTask.detectedPersons());
+        verify(rabbitTemplate).convertAndSend(
+                eq("taskExchange"),
+                eq("taskRoutingKey"),
+                eq(result.id().toString())
+        );
     }
 
     @Test

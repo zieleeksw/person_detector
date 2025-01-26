@@ -13,11 +13,13 @@ public class TaskFacade {
 
     private final TaskRepository repository;
     private final HttpImageClient httpImageClient;
+    private final TaskProducer taskProducer;
 
     public TaskFacade(TaskRepository repository,
-                      HttpImageClient httpImageClient) {
+                      HttpImageClient httpImageClient, TaskProducer taskProducer) {
         this.repository = repository;
         this.httpImageClient = httpImageClient;
+        this.taskProducer = taskProducer;
     }
 
     public CreatedTaskDto save(String url) {
@@ -26,8 +28,9 @@ public class TaskFacade {
 
             Task task = new Task(imageBytes);
             Task savedTask = repository.save(task);
-
-            return new CreatedTaskDto(savedTask.getId());
+            UUID savedTaskId = savedTask.getId();
+            taskProducer.sendTask(savedTaskId);
+            return new CreatedTaskDto(savedTaskId);
         } catch (IOException e) {
             throw new TaskException(String.format("Failed to download image from URL: %s", e.getMessage()));
         }
@@ -40,8 +43,10 @@ public class TaskFacade {
             }
 
             Task task = new Task(file.getBytes());
-            Task saved = repository.save(task);
-            return new CreatedTaskDto(saved.getId());
+            Task savedTask = repository.save(task);
+            UUID savedTaskId = savedTask.getId();
+            taskProducer.sendTask(savedTaskId);
+            return new CreatedTaskDto(savedTaskId);
         } catch (IOException e) {
             throw new TaskException(e.getMessage());
         }
