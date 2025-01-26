@@ -8,7 +8,9 @@ class TaskConfiguration {
 
     @Bean
     TaskFacade taskFacade(TaskRepository taskRepository) {
-        return new TaskFacade(taskRepository);
+        return new TaskFacade(taskRepository,
+                new HttpImageClient()
+        );
     }
 
     TaskFacade taskFacade() {

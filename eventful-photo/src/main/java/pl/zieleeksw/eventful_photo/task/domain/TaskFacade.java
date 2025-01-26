@@ -12,9 +12,25 @@ import java.util.stream.Collectors;
 public class TaskFacade {
 
     private final TaskRepository repository;
+    private final HttpImageClient httpImageClient;
 
-    public TaskFacade(TaskRepository repository) {
+    public TaskFacade(TaskRepository repository,
+                      HttpImageClient httpImageClient) {
         this.repository = repository;
+        this.httpImageClient = httpImageClient;
+    }
+
+    public CreatedTaskDto save(String url) {
+        try {
+            byte[] imageBytes = httpImageClient.download(url);
+
+            Task task = new Task(imageBytes);
+            Task savedTask = repository.save(task);
+
+            return new CreatedTaskDto(savedTask.getId());
+        } catch (IOException e) {
+            throw new TaskException(String.format("Failed to download image from URL: %s", e.getMessage()));
+        }
     }
 
     public CreatedTaskDto save(MultipartFile file) {
@@ -48,6 +64,7 @@ public class TaskFacade {
     public void updateStatus(UUID id, StatusDto statusDto) {
         Task task = repository.findById(id)
                 .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
+
         task.setStatus(Status.valueOf(statusDto.toString()));
         repository.save(task);
     }

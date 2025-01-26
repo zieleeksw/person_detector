@@ -14,7 +14,7 @@ class TaskFacadeTest {
     private final TaskFacade facade = new TaskConfiguration().taskFacade();
 
     @Test
-    void shouldSaveTask() {
+    void shouldSaveTaskFromMultiPartFile() {
         byte[] imageBytes = "image-data".getBytes();
         MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
 
@@ -35,6 +35,14 @@ class TaskFacadeTest {
 
         TaskException exception = assertThrows(TaskException.class, () -> facade.save(file));
         assertEquals("File is empty", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUrlIsInvalid() {
+        String invalidUrl = "http://invalid-url.com/image.jpg";
+
+        TaskException exception = assertThrows(TaskException.class, () -> facade.save(invalidUrl));
+        assertTrue(exception.getMessage().contains("Failed to download image"));
     }
 
     @Test
