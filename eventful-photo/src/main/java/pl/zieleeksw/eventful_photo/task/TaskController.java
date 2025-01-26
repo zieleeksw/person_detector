@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.zieleeksw.eventful_photo.task.domain.TaskFacade;
-import pl.zieleeksw.eventful_photo.task.dto.CreatedTaskDto;
-import pl.zieleeksw.eventful_photo.task.dto.StatusDto;
-import pl.zieleeksw.eventful_photo.task.dto.TaskDto;
-import pl.zieleeksw.eventful_photo.task.dto.TaskStatusDetectedPersonsDto;
+import pl.zieleeksw.eventful_photo.task.dto.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +47,13 @@ class TaskController {
             @PathVariable UUID id
     ) {
         return taskFacade.findById(id);
+    }
+
+    @GetMapping("/{id}/image")
+    TaskImageDto getImageTaskById(
+            @PathVariable UUID id
+    ) {
+        return taskFacade.findTaskImageById(id);
     }
 
     @GetMapping("/count")

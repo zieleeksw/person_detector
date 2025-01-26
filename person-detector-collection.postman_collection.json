@@ -175,8 +175,56 @@
 		{
 			"name": "PUT: Update status and detected persons",
 			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"IN_PROGRESS\",\r\n  \"detectedPersons\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/0c50bfa0-9884-4528-b64f-5945e1f3e33b/status/detected-persons",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"0c50bfa0-9884-4528-b64f-5945e1f3e33b",
+						"status",
+						"detected-persons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: By id with image",
+			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/23a3a78f-eaba-4ed8-aa17-df267a513272/image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"23a3a78f-eaba-4ed8-aa17-df267a513272",
+						"image"
+					]
+				}
 			},
 			"response": []
 		}

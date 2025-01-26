@@ -105,6 +105,27 @@ class TaskFacadeTest {
     }
 
     @Test
+    void shouldFindTaskImageByIdAndReturnTaskImageDto() {
+        byte[] bytes = "image-data".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", bytes);
+        CreatedTaskDto created = facade.save(file);
+
+        TaskImageDto taskImageById = facade.findTaskImageById(created.id());
+
+        assertNotNull(taskImageById);
+        assertEquals(created.id(), taskImageById.id());
+        assertEquals(bytes, taskImageById.image());
+    }
+
+    @Test
+    void shouldThrowTaskExceptionWhenTaskImageNotFoundById() {
+        UUID nonExistentId = UUID.randomUUID();
+
+        TaskException exception = assertThrows(TaskException.class, () -> facade.findTaskImageById(nonExistentId));
+        assertEquals((String.format("Task with id %s not found", nonExistentId)), exception.getMessage());
+    }
+
+    @Test
     void shouldFindAllTasksAndReturnTaskDto() {
         MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", "image-data".getBytes());
         CreatedTaskDto created1 = facade.save(file);

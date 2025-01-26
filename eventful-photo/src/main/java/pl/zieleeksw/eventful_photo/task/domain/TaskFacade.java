@@ -66,6 +66,12 @@ public class TaskFacade {
                 .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
     }
 
+    public TaskImageDto findTaskImageById(UUID id) {
+        return repository.findById(id)
+                .map(Task::imageDto)
+                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
+    }
+
     public Map<StatusDto, Long> getTaskCountByStatus() {
         return Arrays.stream(Status.values())
                 .collect(Collectors.toMap(

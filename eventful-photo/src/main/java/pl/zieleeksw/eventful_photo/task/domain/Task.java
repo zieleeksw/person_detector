@@ -3,6 +3,7 @@ package pl.zieleeksw.eventful_photo.task.domain;
 import jakarta.persistence.*;
 import pl.zieleeksw.eventful_photo.task.dto.StatusDto;
 import pl.zieleeksw.eventful_photo.task.dto.TaskDto;
+import pl.zieleeksw.eventful_photo.task.dto.TaskImageDto;
 
 import java.util.UUID;
 
@@ -72,6 +73,13 @@ class Task {
                 id,
                 StatusDto.valueOf(status.toString()),
                 detectedPersons
+        );
+    }
+
+    TaskImageDto imageDto() {
+        return new TaskImageDto(
+                id,
+                image
         );
     }
 }
