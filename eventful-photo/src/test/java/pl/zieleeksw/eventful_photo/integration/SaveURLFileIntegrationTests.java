@@ -3,27 +3,25 @@ package pl.zieleeksw.eventful_photo.integration;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.zieleeksw.eventful_photo.task.dto.StatusDto;
 
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MultipartFileSaveTaskIntegrationTests extends BaseIntegration {
+class SaveURLFileIntegrationTests extends BaseIntegration {
 
     @Test
-    void shouldSaveTaskFromMultiPartFile() throws Exception {
-        byte[] imageBytes = "image-data".getBytes();
-        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
+    void shouldSaveTaskFromUrl() throws Exception {
+        String validUrl = "https://www.kasandbox.org/programming-images/avatars/spunky-sam-green.png";
 
-        MvcResult result = mockMvc.perform(multipart("/api/v1/tasks")
-                        .file(file)
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+        MvcResult result = mockMvc.perform(post("/api/v1/tasks/url")
+                        .param("url", validUrl)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andReturn();
@@ -39,14 +37,15 @@ class MultipartFileSaveTaskIntegrationTests extends BaseIntegration {
     }
 
     @Test
-    void shouldThrowTaskExceptionWhenFileIsEmpty() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", new byte[0]);
+    void shouldThrowTaskExceptionWhenUrlIsInvalid() throws Exception {
+        String invalidUrl = "http://invalid-url.com/image.jpg";
 
-        mockMvc.perform(multipart("/api/v1/tasks")
-                        .file(file)
-                        .contentType(MediaType.MULTIPART_FORM_DATA))
+        String expectedError = "Failed to download image from URL: Error occurred while fetching image: Failed to fetch image, HTTP status: 403";
+        mockMvc.perform(post("/api/v1/tasks/url")
+                        .param("url", invalidUrl)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("File is empty"));
+                .andExpect(jsonPath("$.message").value(expectedError));
 
         mockMvc.perform(get("/api/v1/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
