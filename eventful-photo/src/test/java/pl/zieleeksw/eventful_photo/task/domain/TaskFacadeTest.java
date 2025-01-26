@@ -58,25 +58,6 @@ class TaskFacadeTest {
         assertEquals((String.format("Task with id %s not found", nonExistentId)), exception.getMessage());
     }
 
-    @Test
-    void shouldReturnStatusById() throws Exception {
-        byte[] imageBytes = "image-data".getBytes();
-        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-
-        CreatedTaskDto saved = facade.save(file);
-
-        StatusDto result = facade.getStatusById(saved.id());
-
-        assertEquals(StatusDto.PENDING, result);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenTaskNotFound() {
-        UUID nonExistentId = UUID.randomUUID();
-
-        TaskException exception = assertThrows(TaskException.class, () -> facade.getStatusById(nonExistentId));
-        assertEquals((String.format("Task with id %s not found", nonExistentId)), exception.getMessage());
-    }
 
     @Test
     void shouldReturnTaskCountByStatus() {

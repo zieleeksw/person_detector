@@ -37,10 +37,6 @@ public class TaskFacade {
                 .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
     }
 
-    public StatusDto getStatusById(UUID id) {
-        return findById(id).status();
-    }
-
     public Map<StatusDto, Long> getTaskCountByStatus() {
         return Arrays.stream(Status.values())
                 .collect(Collectors.toMap(
