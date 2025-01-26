@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>pl.zieleeksw</groupId>
 	<artifactId>eventful-photo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>latest</version>
 	<name>eventful-photo</name>
 	<description>Spring app - project to handle the flow of photos, from their transmission and storage to content analysis</description>
 	<url/>

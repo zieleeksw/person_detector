@@ -1,4 +1,4 @@
-package pl.zieleeksw.eventful_photo.integration;
+package pl.zieleeksw.eventful_photo.task.integration;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
