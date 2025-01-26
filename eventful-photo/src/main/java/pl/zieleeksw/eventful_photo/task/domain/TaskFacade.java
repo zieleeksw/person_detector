@@ -16,7 +16,8 @@ public class TaskFacade {
     private final TaskProducer taskProducer;
 
     public TaskFacade(TaskRepository repository,
-                      HttpImageClient httpImageClient, TaskProducer taskProducer) {
+                      HttpImageClient httpImageClient,
+                      TaskProducer taskProducer) {
         this.repository = repository;
         this.httpImageClient = httpImageClient;
         this.taskProducer = taskProducer;

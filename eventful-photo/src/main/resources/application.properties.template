@@ -1,1 +1,13 @@
-spring.application.name=eventful-photo
+spring.application.name=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+#spring.jpa.hibernate.ddl-auto=create
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+
+spring.rabbitmq.host=
+spring.rabbitmq.port=
+spring.rabbitmq.username=
+spring.rabbitmq.password=
