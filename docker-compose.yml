@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./tools/rabbit/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./tools/rabbit/definitions.json:/etc/rabbitmq/definitions.json
+    networks:
+      - microservices_network
+
+  postgres:
+    image: postgres:17.2
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: test_queues
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    driver: bridge
