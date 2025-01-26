@@ -61,39 +61,33 @@ public class TaskFacade {
     }
 
     public TaskDto findById(UUID id) {
-        return repository.findById(id)
-                .map(Task::dto)
-                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
+        return findTaskById(id).dto();
     }
 
     public TaskImageDto findTaskImageById(UUID id) {
-        return repository.findById(id)
-                .map(Task::imageDto)
-                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
+        return findTaskById(id).imageDto();
     }
 
     public Map<StatusDto, Long> getTaskCountByStatus() {
         return Arrays.stream(Status.values())
-                .collect(Collectors.toMap(
-                        status -> StatusDto.valueOf(status.toString()),
-                        repository::countByStatus
-                ));
+                .collect(Collectors.toMap(Status::of, repository::countByStatus));
     }
 
     public void updateStatus(UUID id, StatusDto statusDto) {
-        Task task = repository.findById(id)
-                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
-
-        task.setStatus(Status.valueOf(statusDto.toString()));
-        repository.save(task);
+        Task taskById = findTaskById(id);
+        taskById.setStatus(Status.from(statusDto));
+        repository.save(taskById);
     }
 
     public void updateStatusAndDetectedPersons(UUID id, TaskStatusDetectedPersonsDto dto) {
-        Task task = repository.findById(id)
-                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
+        Task taskById = findTaskById(id);
+        taskById.setStatus(Status.valueOf(dto.status().toString()));
+        taskById.setDetectedPersons(dto.detectedPersons());
+        repository.save(taskById);
+    }
 
-        task.setStatus(Status.valueOf(dto.status().toString()));
-        task.setDetectedPersons(dto.detectedPersons());
-        repository.save(task);
+    private Task findTaskById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new TaskException(String.format("Task with id %s not found", id)));
     }
 }
