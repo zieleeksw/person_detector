@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "fbc80092-cd44-468a-8318-5fe6e3b0a205",
+		"name": "person-detector-collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26225853"
+	},
+	"item": [
+		{
+			"name": "POST: MultipartFile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/sziel/Desktop/queues/output.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: URL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "url",
+							"value": "https://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1211/wavebreakmediamicro121112837/16236070-czterech-ludzi-stoj%C4%85cych-obok-siebie-i-u%C5%9Bmiecha-si%C4%99-wszystkie-wygl%C4%85daj%C4%85-na-kamery.jpg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/url",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"url"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: By id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/0c50bfa0-9884-4528-b64f-5945e1f3e33b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"0c50bfa0-9884-4528-b64f-5945e1f3e33b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: Count by status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT: Update status",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "status",
+						"value": "COMPLETED",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "COMPLETED",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/bf91a3ef-1b45-4372-aafa-24b10a6e1b95/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"bf91a3ef-1b45-4372-aafa-24b10a6e1b95",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT: Update status and detected persons",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
