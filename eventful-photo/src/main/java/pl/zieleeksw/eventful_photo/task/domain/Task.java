@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -36,6 +37,15 @@ class Task {
         this.image = image;
     }
 
+    void update(Status status) {
+        this.status = status;
+    }
+
+    void update(Status status, Integer detectedPersons) {
+        this.status = status;
+        this.detectedPersons = detectedPersons;
+    }
+
     UUID getId() {
         return id;
     }
@@ -48,24 +58,12 @@ class Task {
         return status;
     }
 
-    void setStatus(Status status) {
-        this.status = status;
-    }
-
     Integer getDetectedPersons() {
         return detectedPersons;
     }
 
-    void setDetectedPersons(Integer detectedPersons) {
-        this.detectedPersons = detectedPersons;
-    }
-
     byte[] getImage() {
         return image;
-    }
-
-    void setImage(byte[] image) {
-        this.image = image;
     }
 
     TaskDto dto() {

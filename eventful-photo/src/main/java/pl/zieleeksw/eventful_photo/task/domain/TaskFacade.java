@@ -75,14 +75,13 @@ public class TaskFacade {
 
     public void updateStatus(UUID id, StatusDto statusDto) {
         Task taskById = findTaskById(id);
-        taskById.setStatus(Status.from(statusDto));
+        taskById.update(Status.from(statusDto));
         repository.save(taskById);
     }
 
     public void updateStatusAndDetectedPersons(UUID id, TaskStatusDetectedPersonsDto dto) {
         Task taskById = findTaskById(id);
-        taskById.setStatus(Status.valueOf(dto.status().toString()));
-        taskById.setDetectedPersons(dto.detectedPersons());
+        taskById.update(Status.valueOf(dto.status().toString()), dto.detectedPersons());
         repository.save(taskById);
     }
 
