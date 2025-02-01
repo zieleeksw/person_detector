@@ -1,1 +1,14 @@
 spring.application.name=eventful-photo
+
+spring.rabbitmq.host=rabbitmq
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+yolo.weights=yolov4.weights
+yolo.config=yolov4.cfg
+yolo.classes=coco.names
+
+rabbitmq.queue.name=taskQueue
+rabbitmq.exchange.name=taskExchange
+rabbitmq.routing.key=taskRoutingKey
