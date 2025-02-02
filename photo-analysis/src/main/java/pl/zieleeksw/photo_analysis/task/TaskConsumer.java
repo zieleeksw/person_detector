@@ -15,6 +15,6 @@ class TaskConsumer {
 
     @RabbitListener(queues = "#{@rabbitMQQueueName}")
     void consumeTask(String taskId) {
-        taskFacade.consumeTask(taskId);
+        taskFacade.detectPersons(taskId);
     }
 }

@@ -72,9 +72,9 @@ class TaskController {
     @PutMapping("/{id}/status")
     @Transactional
     void updateTaskStatus(
-            @PathVariable UUID id, @RequestBody String status
+            @PathVariable UUID id, @RequestBody StatusDto status
     ) {
-        taskFacade.updateStatus(id, StatusDto.valueOf(status));
+        taskFacade.updateStatus(id, status);
     }
 
     @PutMapping("/{id}/status/detected-persons")
